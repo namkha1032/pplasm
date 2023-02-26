@@ -173,12 +173,12 @@ UNCLOSE_STRING: ["] (~[\\\n\b\f\r\t'"] | [\\][bfrnt'"\\])*[\n]? {
 		raise UncloseString(self.text[1:])
 	};
 
-ILLEGAL_ESCAPE: ["] (~[\\] | [\\][bfrnt'"\\])*[\\]~[bfrnt'"\\] {raise IllegalEscape(self.text[1:])};
+ILLEGAL_ESCAPE: ["] (~[\\\n\b\f\r\t'"] | [\\][bfrnt'"\\])*[\\]~[bfrnt'"\\] {raise IllegalEscape(self.text[1:])};
 
-UNTERMINATED_COMMENT: '/*' ~[(*/)]* {
+UNTERMINATED_COMMENT: '/*' ~[(*/)]*[\n]? {
 	if self.text.find('\n') != -1:
 		pos = self.text.find('\n')
-		raise UnterminatedComment(self.text[0:pos])
+		raise UnterminatedComment(self.text[0:pos-1])
 	else:
 		raise UnterminatedComment(self.text[0:])
 	};

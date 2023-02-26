@@ -20,18 +20,16 @@ def main(argv):
     elif argv[0] == 'clean':
         subprocess.run(["rm", "-rf", TARGET_DIR + "/*"])
 
-    elif argv[0] == 'test':
+    elif argv[0] == '1' or argv[0] == '2':
         if not os.path.isdir(TARGET_DIR + "/" + GENERATE_DIR):
             subprocess.run(["java", "-jar", ANTLR_JAR, "-o", GENERATE_DIR,
                            "-no-listener", "-visitor", "main/mt22/parser/MT22.g4"])
         if not (TARGET_DIR + "/" + GENERATE_DIR) in sys.path:
             sys.path.append(TARGET_DIR + "/" + GENERATE_DIR)
-        if len(argv) < 2:
-            printUsage()
-        elif argv[1] == 'LexerSuite':
+        if argv[0] == '1':
             from LexerSuite import LexerSuite
             getAndTest(LexerSuite)
-        elif argv[1] == 'ParserSuite':
+        elif argv[0] == '2':
             from ParserSuite import ParserSuite
             getAndTest(ParserSuite)
         else:
@@ -60,8 +58,8 @@ def test(suite):
 
 def printUsage():
     print("python3 run.py gen")
-    print("python3 run.py test LexerSuite")
-    print("python3 run.py test ParserSuite")
+    print("python3 run.py test 1")
+    print("python3 run.py test 2")
 
 
 if __name__ == "__main__":
