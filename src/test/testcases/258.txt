@@ -1,0 +1,5 @@
+do{
+                            print(i);
+                            if(i==a)
+                                break;
+                    }while(i<100);

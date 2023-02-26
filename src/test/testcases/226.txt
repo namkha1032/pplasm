@@ -1,0 +1,5 @@
+if(emDongY == true)
+                            print("To tinh thanh cong");
+                        else
+                            print("Mai lam ban nhe");
+                        

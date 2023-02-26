@@ -1,0 +1,4 @@
+{
+                        getCookie();
+                        drinkMilk();
+                    }

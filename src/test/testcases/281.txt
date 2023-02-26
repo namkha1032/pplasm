@@ -1,0 +1,1 @@
+mulAndPrint(a,b);

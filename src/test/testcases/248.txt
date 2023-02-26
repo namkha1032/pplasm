@@ -1,0 +1,2 @@
+do{sleep();}
+                        while(everybodyStudying());

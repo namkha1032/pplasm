@@ -1,0 +1,12 @@
+foo: function void(x: integer){
+                            if(x>=10)
+                                print("kha dep trai");
+                            else{
+                                if(x%2==0)
+                                    print("kha xau trai");
+                                else{
+                                    print("kha vjp pro");
+                                    print("kha dep trai x10");
+                                }
+                            }
+                    }

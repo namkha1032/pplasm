@@ -1,0 +1,4 @@
+do{
+                            dostuff();
+                    }
+                    while(homeAlone == true);

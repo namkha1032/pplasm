@@ -1,1 +1,1 @@
-main: function void () {}
+y: float = 10.3;

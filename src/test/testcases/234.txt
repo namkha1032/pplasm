@@ -1,0 +1,4 @@
+for(i=0, i < arrayLength, i+1){
+                            arr[i]=arr[i]*2;
+                    }
+                    

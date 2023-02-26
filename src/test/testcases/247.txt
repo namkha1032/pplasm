@@ -1,0 +1,3 @@
+while(mood == "happy"){
+                            study();
+                    }

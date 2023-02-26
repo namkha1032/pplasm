@@ -1,0 +1,4 @@
+/*This is block cmt
+hehehe
+x:integer=1;*/
+x : integer = 1;//This is line comment

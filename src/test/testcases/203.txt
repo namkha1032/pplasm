@@ -1,0 +1,1 @@
+newArr: array = array[4,5,6] of float;
