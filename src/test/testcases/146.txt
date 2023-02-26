@@ -1,0 +1,2 @@
+/* 1st comment */a = x + 1;
+/* 2nd comment */print(a);

@@ -1,0 +1,1 @@
+"unclose str with bad escape (catch bad escape first):\e

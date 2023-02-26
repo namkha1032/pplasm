@@ -1,3 +1,5 @@
+// Nguyễn Nam Kha
+// 2052515
 grammar MT22;
 
 @lexer::header {

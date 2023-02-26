@@ -1,0 +1,2 @@
+x = 1;// 1stcomment
+print(x);// 2nd comment;

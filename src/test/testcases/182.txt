@@ -1,0 +1,2 @@
+x=1;//good cmt
+y=2;/*unclose comment

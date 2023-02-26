@@ -1,0 +1,2 @@
+a="str with good escape:\n";
+b="str with bad escape:\x"
