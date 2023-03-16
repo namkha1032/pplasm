@@ -60,7 +60,7 @@ class ArrayType(Type):
         self.typ = typ
 
     def __str__(self):
-        return "ArrayType([{}], {})".format(", ".join([dimen for dimen in self.dimensions]), str(self.typ))
+        return "ArrayType([{}], {})".format(", ".join([str(dimen) for dimen in self.dimensions]), str(self.typ))
 
 
 class AutoType(Type):
@@ -91,7 +91,7 @@ class BinExpr(Expr):
 
 class UnExpr(Expr):
     def __init__(self, op: str, val: Expr):
-        self.op = str
+        self.op = op
         self.val = val
 
     def __str__(self):
@@ -135,6 +135,9 @@ class StringLit(Expr):
     def __init__(self, val: str):
         self.val = val
 
+    def __str__(self):
+        return "StringLit({})".format(self.val)
+
 
 class BooleanLit(Expr):
     def __init__(self, val: bool):
@@ -149,7 +152,7 @@ class ArrayLit(Expr):
         self.explist = explist
 
     def __str__(self):
-        return "ArrayLit([{}])".format(", ".join([self.visit(exp) for exp in self.explist]))
+        return "ArrayLit([{}])".format(", ".join([str(exp) for exp in self.explist]))
 
 
 class FuncCall(Expr):
