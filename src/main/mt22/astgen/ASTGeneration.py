@@ -6,3 +6,4 @@ from AST import *
 class ASTGeneration(MT22Visitor):
     def visitProgram(self, ctx: MT22Parser.ProgramContext):
         return Program([])
+    

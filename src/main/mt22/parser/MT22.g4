@@ -54,10 +54,23 @@ funcbody: blockstmt;
 funccall: ID LRB exprlistnullable RRB;
 // Operator precedence and assoc
 expr : expr1 CONCAT expr1 | expr1;
-expr1: expr2 (EQUAL | NOTEQUAL | LESS | GREATER | LESSEQUAL | GREATEREQUAL) expr2 | expr2;
-expr2: expr2 (AND | OR) expr3 | expr3;
-expr3: expr3 (ADD | SUB) expr4 | expr4;
-expr4: expr4 (MUL | DIV | MOD) expr5 | expr5;
+expr1: expr2 EQUAL expr2
+	 | expr2 NOTEQUAL expr2
+	 | expr2 LESS expr2  
+	 | expr2 GREATER expr2  
+	 | expr2 LESSEQUAL expr2  
+	 | expr2 GREATEREQUAL expr2  
+	 | expr2;
+expr2: expr2 AND expr3 
+	 | expr2 OR expr3 
+ 	 | expr3;
+expr3: expr3 ADD expr4 
+	 | expr3 ADD expr4 
+	 | expr4;
+expr4: expr4 MUL expr5 
+	 | expr4 DIV expr5 
+	 | expr4 MOD expr5 
+	 | expr5;
 expr5: NOT expr5 | expr6;
 expr6: SUB expr6 | expr7;
 expr7: INTLIT | FLOATLIT  | STRINGLIT | TRUE | FALSE | ID | arraylit | arrayindex | funccall | (LRB expr RRB);
