@@ -27,20 +27,14 @@ class ASTGeneration(MT22Visitor):
     def visitFullformat(self, ctx: MT22Parser.FullformatContext):
         if ctx.ASSIGN():
             return [VarDecl(ctx.ID().getText(), ctx.typ().accept(self), ctx.expr().accept(self))]
-            # [VarDecl(d,int,1)]
         # a , b, c : int = 1 , 2, 3
         #[Vardecl(c,int,1)]
         #[Vardecl(b,int,1), Vardecl(c,int,2)]
         full = ctx.fullformat().accept(self)
-        # [VarDecl(d,int,1)]
-        exprlst = [i.init for i in full] + [ctx.expr().accept(self)] 
-        # [1,2]
-        idlst = [ctx.ID().getText()] + [i.name for i in full] 
-        # [c,d]
-        id_type = full[0].typ 
-        # int
-        return [VarDecl(idlst[i], id_type, exprlst[i]) for i in range(len(exprlst))] 
-        # [VarDecl(c, int, 1), VarDecl(d,int,2)      
+        exprlst = [i.init for i in full] + [ctx.expr().accept(self)]
+        idlst = [ctx.ID().getText()] + [i.name for i in full]
+        id_type = full[0].typ
+        return [VarDecl(idlst[i], id_type, exprlst[i]) for i in range(len(exprlst))]      
     
     def visitExpr(self, ctx: MT22Parser.ExprContext):
         if ctx.CONCAT():

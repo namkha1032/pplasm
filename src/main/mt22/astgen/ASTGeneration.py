@@ -30,6 +30,26 @@ class ASTGeneration(MT22Visitor):
         if ctx.VOID(): return VoidType()
         if ctx.arraytyp(): return self.visit(ctx.arraytyp())
 
+    def visitArraytyp(self, ctx:MT22Parser.ArraytypContext):
+        return ArrayType(self.visit(ctx.dimensions()), self.visit(ctx.atomictyp()))
+
+
+    def visitDimensions(self, ctx:MT22Parser.DimensionsContext):
+        if ctx.COMMA():
+            return [int(ctx.INTLIT().getText())] + self.visit(ctx.dimensions())
+        return [int(ctx.INTLIT().getText())]
+
+
+    def visitArrayindex(self, ctx:MT22Parser.ArrayindexContext):
+        return ArrayCell(ctx.ID().getText(), self.visit(ctx.exprlistnonnull()))
+    
+
+
+    def visitArraylit(self, ctx:MT22Parser.ArraylitContext):
+        return self.visit(ctx.exprlistnullable())
+
+
+
     def visitExpr7(self, ctx:MT22Parser.Expr7Context):
         if ctx.INTEGER(): return IntegerType()
         if ctx.FLOAT(): return FloatType()
@@ -157,10 +177,47 @@ class ASTGeneration(MT22Visitor):
             return self.visit(ctx.blockstmt())
 
     def visitStmtlist(self, ctx:MT22Parser.StmtlistContext):
-        return self.visitChildren(ctx)
+        if ctx.getChildCount() == 0:
+            return []
+        if ctx.stmt():
+            return [self.visit(ctx.stmt())] + self.visit(ctx.stmtlist())
+        if ctx.vardecl():
+            return [self.visit(ctx.vardecl())] + self.visit(ctx.stmtlist())
+        
+    def visitBlockstmt(self, ctx:MT22Parser.BlockstmtContext):
+        return BlockStmt(self.visit(ctx.stmtlist()))
+    
+    def visitExprlistnullable(self, ctx:MT22Parser.ExprlistnullableContext):
+        if ctx.exprlistnonnull():
+            return self.visit(ctx.exprlistnonnull())
+        if ctx.getChildCount() == 0:
+            return []
 
 
+    def visitExprlistnonnull(self, ctx:MT22Parser.ExprlistnonnullContext):
+        if ctx.getChildCount() == 1:
+            return [self.visit(ctx.expr())]
+        return [self.visit(ctx.expr())] + self.visit(ctx.exprlistnonnull())
 
+    def visitIdlist(self, ctx:MT22Parser.IdlistContext):
+        if ctx.COMMA():
+            return [ctx.ID().getText()] + self.visit(ctx.idlist())
+        return [ctx.ID().getText()]
+
+    def visitVardecl(self, ctx:MT22Parser.VardeclContext):
+        if ctx.COLON():
+            return [VarDecl(x, self.visit(ctx.typ())) for x in self.visit(ctx.idlist())]
+        return self.visit(ctx.varinit())
+
+    def visitVarinit(self, ctx:MT22Parser.VarinitContext):
+        if ctx.typ():
+            return [VarDecl(ctx.ID().getText(), self.visit(ctx.typ()), self.visit(ctx.expr()))]
+        childArray = self.visit(ctx.varinit())
+        exprlist = [x.init for x in childArray] + [ctx.expr().accept(self)]
+        idlist = [ctx.ID().getText()] + [x.name for x in childArray] 
+        return [VarDecl(idlist[i], childArray[0].typ, exprlist[i]) for i in range(len(exprlist))]
+
+    
 
 
 
