@@ -1,5 +1,0 @@
-{
-                        if(troiNang == true){
-                            rangoaichoi();
-                        }
-                    }

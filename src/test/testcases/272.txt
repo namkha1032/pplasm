@@ -1,3 +1,0 @@
-intFunc1: function integer(a: integer, b:integer){
-                        return a + b;
-                    }

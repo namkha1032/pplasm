@@ -1,2 +1,0 @@
-"uncls str:
-x = x + 1;

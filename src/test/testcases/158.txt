@@ -1,3 +1,0 @@
-// 1st comment
-// 2nd comment
-print(x);// 3rd comment

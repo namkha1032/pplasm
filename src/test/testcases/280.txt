@@ -1,1 +1,0 @@
-addAndPrint(a,b);

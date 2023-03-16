@@ -1,1 +1,0 @@
-print("str with bad escape:\a")

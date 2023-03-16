@@ -1,1 +1,1 @@
-y: float = 10.3;
+delta: integer = 3;

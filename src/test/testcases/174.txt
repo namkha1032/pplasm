@@ -1,1 +1,0 @@
-print("str with good escape:\n","str with bad escape:\x");

@@ -1,5 +1,0 @@
-a: integer = 2;
-                       b: integer = 3;
-                       mulfunc: function integer(x: integer, y: integer){
-                            return x*y;
-                    }
