@@ -1,8 +1,0 @@
-if(a || b){
-                        if(a)
-                            print(a);
-                        else
-                            print(c);
-                        }
-                        else
-                        print(d);

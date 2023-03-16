@@ -1,3 +1,0 @@
-floatFunc3: function float(a: float, b:float){
-                        return a * b;
-                    }

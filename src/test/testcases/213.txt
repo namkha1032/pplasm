@@ -1,3 +1,0 @@
-simpleFunc1: function auto(){
-                        return 1+1;
-                    }

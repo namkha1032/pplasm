@@ -1,3 +1,0 @@
-while(!flag){
-                            print("world cup");
-                    }

@@ -1,5 +1,0 @@
-while(y<100){
-                        print(y);
-                        if(y==a)
-                            break;
-                    }

@@ -1,2 +1,0 @@
-do{sleep();}
-                        while(everybodyStudying());

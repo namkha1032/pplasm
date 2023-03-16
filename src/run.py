@@ -4,7 +4,7 @@ import subprocess
 import unittest
 from antlr4 import *
 
-for path in ['./test/', './main/mt22/parser/']:
+for path in ['./test/', './main/mt22/parser/', './main/mt22/utils/', './main/mt22/astgen/', './main/mt22/checker/', './main/mt22/codegen/']:
     sys.path.append(path)
 ANTLR_JAR = os.environ.get('ANTLR_JAR')
 TARGET_DIR = '../target'
@@ -20,18 +20,29 @@ def main(argv):
     elif argv[0] == 'clean':
         subprocess.run(["rm", "-rf", TARGET_DIR + "/*"])
 
-    elif argv[0] == '1' or argv[0] == '2':
+    elif argv[0] == 'test':
         if not os.path.isdir(TARGET_DIR + "/" + GENERATE_DIR):
             subprocess.run(["java", "-jar", ANTLR_JAR, "-o", GENERATE_DIR,
                            "-no-listener", "-visitor", "main/mt22/parser/MT22.g4"])
         if not (TARGET_DIR + "/" + GENERATE_DIR) in sys.path:
             sys.path.append(TARGET_DIR + "/" + GENERATE_DIR)
-        if argv[0] == '1':
+        if len(argv) < 2:
+            printUsage()
+        elif argv[1] == 'LexerSuite':
             from LexerSuite import LexerSuite
             getAndTest(LexerSuite)
-        elif argv[0] == '2':
+        elif argv[1] == 'ParserSuite':
             from ParserSuite import ParserSuite
             getAndTest(ParserSuite)
+        elif argv[1] == 'ASTGenSuite':
+            from ASTGenSuite import ASTGenSuite
+            getAndTest(ASTGenSuite)
+        # elif argv[1] == 'CheckerSuite':
+        #     from CheckerSuite import CheckerSuite
+        #     getAndTest(CheckerSuite)
+        # elif argv[1] == 'CodeGenSuite':
+        #     from CodeGenSuite import CheckCodeGenSuite
+        #     getAndTest(CheckCodeGenSuite)
         else:
             printUsage()
     else:
@@ -58,8 +69,11 @@ def test(suite):
 
 def printUsage():
     print("python3 run.py gen")
-    print("python3 run.py test 1")
-    print("python3 run.py test 2")
+    print("python3 run.py test LexerSuite")
+    print("python3 run.py test ParserSuite")
+    print("python3 run.py test ASTGenSuite")
+    # print("python3 run.py test CheckerSuite")
+    # print("python3 run.py test CodeGenSuite")
 
 
 if __name__ == "__main__":

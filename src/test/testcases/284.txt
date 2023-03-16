@@ -1,1 +1,0 @@
-print("kha dep trai");

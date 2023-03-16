@@ -1,5 +1,0 @@
-do{
-                        laugh();
-                        eat();
-                        hehe = 123;
-                    } while(hotFood);

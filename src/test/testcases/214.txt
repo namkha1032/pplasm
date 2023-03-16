@@ -1,3 +1,0 @@
-simpleFunc2: function void(){
-                        print("hehehe");
-                    }

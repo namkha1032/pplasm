@@ -1,1 +1,0 @@
-printFraction(2,3);

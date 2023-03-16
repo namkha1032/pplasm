@@ -1,5 +1,0 @@
-for(y=1,y<100,y+1){
-                        print(y);
-                        if(y == a)
-                            break;
-                    }
