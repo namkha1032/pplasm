@@ -24,8 +24,8 @@ class MT22Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MT22Parser#functyp.
-    def visitFunctyp(self, ctx:MT22Parser.FunctypContext):
+    # Visit a parse tree produced by MT22Parser#typ.
+    def visitTyp(self, ctx:MT22Parser.TypContext):
         return self.visitChildren(ctx)
 
 
@@ -34,28 +34,13 @@ class MT22Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MT22Parser#typ.
-    def visitTyp(self, ctx:MT22Parser.TypContext):
+    # Visit a parse tree produced by MT22Parser#functyp.
+    def visitFunctyp(self, ctx:MT22Parser.FunctypContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MT22Parser#exprlist.
-    def visitExprlist(self, ctx:MT22Parser.ExprlistContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MT22Parser#idlist.
-    def visitIdlist(self, ctx:MT22Parser.IdlistContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MT22Parser#arraylit.
-    def visitArraylit(self, ctx:MT22Parser.ArraylitContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MT22Parser#arrayinit.
-    def visitArrayinit(self, ctx:MT22Parser.ArrayinitContext):
+    # Visit a parse tree produced by MT22Parser#arraytyp.
+    def visitArraytyp(self, ctx:MT22Parser.ArraytypContext):
         return self.visitChildren(ctx)
 
 
@@ -66,6 +51,26 @@ class MT22Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MT22Parser#arrayindex.
     def visitArrayindex(self, ctx:MT22Parser.ArrayindexContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MT22Parser#arraylit.
+    def visitArraylit(self, ctx:MT22Parser.ArraylitContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MT22Parser#exprlistnullable.
+    def visitExprlistnullable(self, ctx:MT22Parser.ExprlistnullableContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MT22Parser#exprlistnonnull.
+    def visitExprlistnonnull(self, ctx:MT22Parser.ExprlistnonnullContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MT22Parser#idlist.
+    def visitIdlist(self, ctx:MT22Parser.IdlistContext):
         return self.visitChildren(ctx)
 
 
@@ -89,13 +94,13 @@ class MT22Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MT22Parser#paramlist.
-    def visitParamlist(self, ctx:MT22Parser.ParamlistContext):
+    # Visit a parse tree produced by MT22Parser#paramlistnullable.
+    def visitParamlistnullable(self, ctx:MT22Parser.ParamlistnullableContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MT22Parser#paramprime.
-    def visitParamprime(self, ctx:MT22Parser.ParamprimeContext):
+    # Visit a parse tree produced by MT22Parser#paramlistnonnull.
+    def visitParamlistnonnull(self, ctx:MT22Parser.ParamlistnonnullContext):
         return self.visitChildren(ctx)
 
 
@@ -111,16 +116,6 @@ class MT22Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MT22Parser#funccall.
     def visitFunccall(self, ctx:MT22Parser.FunccallContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MT22Parser#arglist.
-    def visitArglist(self, ctx:MT22Parser.ArglistContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MT22Parser#argprime.
-    def visitArgprime(self, ctx:MT22Parser.ArgprimeContext):
         return self.visitChildren(ctx)
 
 

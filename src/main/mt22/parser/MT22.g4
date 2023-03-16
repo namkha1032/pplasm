@@ -17,22 +17,22 @@ program: decllist  EOF ;
 // -----------------------------------------------------------------------
 
 decllist: decl decllist | decl;
-decl:  vardecl | funcdecl | stmt;
+decl:  vardecl | funcdecl;
 
 // type
-functyp: BOOLEAN | INTEGER | FLOAT | STRING | AUTO | VOID;
+typ: BOOLEAN | INTEGER | FLOAT | STRING | AUTO | arraytyp;
 atomictyp: BOOLEAN | INTEGER | FLOAT | STRING ;
-typ: BOOLEAN | INTEGER | FLOAT | STRING | AUTO | ARRAY;
+functyp: BOOLEAN | INTEGER | FLOAT | STRING | AUTO | VOID | arraytyp;
+// Array type, lit
+arraytyp: ARRAY LSB dimensions RSB OF atomictyp;
+dimensions: INTLIT COMMA dimensions | INTLIT;
+arrayindex: ID LSB exprlistnonnull RSB;
+arraylit: LCB exprlistnullable RCB;
 // Expr list
-exprlist: expr COMMA exprlist | expr;
+exprlistnullable: exprlistnonnull | ;
+exprlistnonnull: expr COMMA exprlistnonnull | expr;
 // ID list
 idlist: ID COMMA idlist | ID;
-// Literals - parser
-arraylit: LCB exprlist RCB;
-// Array declaration
-arrayinit: ARRAY LSB dimensions RSB OF atomictyp;
-dimensions: INTLIT COMMA dimensions | INTLIT;
-arrayindex: ID LSB exprlist RSB;
 // Var declaration
 vardecl:  idlist COLON typ SEMI
 	    | varinit SEMI; // init var
@@ -40,16 +40,18 @@ varinit: (ID COMMA varinit COMMA expr) | (ID COLON typ ASSIGN expr) ;
 // Func declaration
 funcdecl: funcpro funcbody;
 // Func prototype
-funcpro:  ID COLON FUNCTION functyp LRB paramlist RRB (INHERIT ID | );
-paramlist : paramprime | ;
-paramprime: param COMMA paramprime| param;
-param: (INHERIT | ) (OUT | ) ID COLON typ ;
+funcpro:  ID COLON FUNCTION functyp LRB paramlistnullable RRB
+		| ID COLON FUNCTION functyp LRB paramlistnullable RRB INHERIT ID;
+paramlistnullable : paramlistnonnull | ;
+paramlistnonnull: param COMMA paramlistnonnull| param;
+param: ID COLON typ
+	 | INHERIT ID COLON typ
+	 | OUT ID COLON typ
+	 | INHERIT OUT ID COLON typ;
 // Func body
 funcbody: blockstmt;
 // Func call
-funccall: ID LRB arglist RRB;
-arglist: argprime | ;
-argprime: (ID | expr) COMMA argprime| (ID | expr); 
+funccall: ID LRB exprlistnullable RRB;
 // Operator precedence and assoc
 expr : expr1 CONCAT expr1 | expr1;
 expr1: expr2 (EQUAL | NOTEQUAL | LESS | GREATER | LESSEQUAL | GREATEREQUAL) expr2 | expr2;
@@ -58,14 +60,25 @@ expr3: expr3 (ADD | SUB) expr4 | expr4;
 expr4: expr4 (MUL | DIV | MOD) expr5 | expr5;
 expr5: NOT expr5 | expr6;
 expr6: SUB expr6 | expr7;
-expr7: INTLIT | FLOATLIT  | STRINGLIT | TRUE | FALSE | ID | arraylit | arrayindex | arrayinit | funccall;
+expr7: INTLIT | FLOATLIT  | STRINGLIT | TRUE | FALSE | ID | arraylit | arrayindex | funccall | (LRB expr RRB);
 
 // Statement
 blockstmt: LCB stmtlist RCB;
-stmtlist: stmt stmtlist | ;
-stmt: assignstmt | ifstmt | forstmt | whilestmt | dowhilestmt | breakstmt | continuestmt | returnstmt | callstmt | vardecl | blockstmt ;
+stmtlist: stmt stmtlist 
+		| vardecl stmtlist ;
+stmt: assignstmt 
+	| ifstmt 
+	| forstmt 
+	| whilestmt 
+	| dowhilestmt 
+	| breakstmt 
+	| continuestmt 
+	| returnstmt
+	| callstmt
+	| blockstmt ;
 // Assign statement
-assignstmt: (ID | arrayindex) ASSIGN expr SEMI;
+assignstmt: ID ASSIGN expr SEMI
+		  | arrayindex ASSIGN expr SEMI;
 // If statement
 // ifstmt: matchstmt 
 // 	  | unmatchstmt;
@@ -76,7 +89,8 @@ assignstmt: (ID | arrayindex) ASSIGN expr SEMI;
 ifstmt: IF LRB expr RRB stmt
 	  | IF LRB expr RRB stmt ELSE stmt;
 // For statement
-forstmt: FOR LRB (ID | arrayindex) ASSIGN expr COMMA expr COMMA expr RRB stmt;
+forstmt: FOR LRB ID ASSIGN expr COMMA expr COMMA expr RRB stmt
+       | FOR LRB arrayindex ASSIGN expr COMMA expr COMMA expr RRB stmt;
 
 // While statement
 whilestmt: WHILE LRB expr RRB stmt;
@@ -158,7 +172,6 @@ CPLUSCOMMENT:   '//' ~[\n]* -> skip;
 // Literals - lexer
 INTLIT: '0' | [1-9] [0-9]* ('_'[0-9]+)* {self.text = self.text.replace("_","")};
 FLOATLIT: (([0-9]+)('_'[0-9]+)*('.'[0-9]+)('_'[0-9]+)* | ([0-9]+)('_'[0-9]+)*('.'[0-9]+)?('_'[0-9]+)*([eE][-]?[0-9]+)('_'[0-9]+)*) {self.text = self.text.replace("_","")};
-// BOOLLIT: 'true' | 'false';
 STRINGLIT: ["] (~[\\\n\b\f\r\t'"] | [\\][bfrnt'"\\])*["] {self.text = self.text[1:-1]};
 //
 ID: ( [a-zA-Z] | '_' ) ([a-zA-Z]  | [0-9] | '_') * ; 
