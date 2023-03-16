@@ -65,7 +65,7 @@ expr2: expr2 AND expr3
 	 | expr2 OR expr3 
  	 | expr3;
 expr3: expr3 ADD expr4 
-	 | expr3 ADD expr4 
+	 | expr3 SUB expr4 
 	 | expr4;
 expr4: expr4 MUL expr5 
 	 | expr4 DIV expr5 
@@ -78,7 +78,8 @@ expr7: INTLIT | FLOATLIT  | STRINGLIT | TRUE | FALSE | ID | arraylit | arrayinde
 // Statement
 blockstmt: LCB stmtlist RCB;
 stmtlist: stmt stmtlist 
-		| vardecl stmtlist ;
+		| vardecl stmtlist
+		| ;
 stmt: assignstmt 
 	| ifstmt 
 	| forstmt 
