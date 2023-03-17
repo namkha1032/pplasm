@@ -5,8 +5,20 @@ from AST import *
 
 class ASTGeneration(MT22Visitor):
     def visitProgram(self, ctx: MT22Parser.ProgramContext):
-        return Program([])
-    
+        return Program(self.visit(ctx.decllist()))
+    # Visit a parse tree produced by MT22Parser#decllist.
+    def visitDecllist(self, ctx:MT22Parser.DecllistContext):
+        if ctx.decllist():
+            return [self.visit(ctx.decl())] + self.visit(ctx.decllist())
+        return [self.visit(ctx.decl())]
+
+    # Visit a parse tree produced by MT22Parser#decl.
+    def visitDecl(self, ctx:MT22Parser.DeclContext):
+        if ctx.vardecl():
+            return self.visit(ctx.vardecl())
+        return self.visit(ctx.funcdecl())
+
+
     def visitTyp(self, ctx: MT22Parser.TypContext):
         if ctx.BOOLEAN(): return BooleanType()
         if ctx.INTEGER(): return IntegerType()
@@ -217,6 +229,58 @@ class ASTGeneration(MT22Visitor):
         idlist = [ctx.ID().getText()] + [x.name for x in childArray] 
         return [VarDecl(idlist[i], childArray[0].typ, exprlist[i]) for i in range(len(exprlist))]
 
+    # Visit a parse tree produced by MT22Parser#funcdecl.
+    def visitFuncdecl(self, ctx:MT22Parser.FuncdeclContext):
+        IDVar, functypVar, paramlistnullableVar, inheritIDVar = self.visit(ctx.funcpro())
+        funcbodyVar = self.visit(ctx.funcbody())
+        if inheritIDVar:
+            return FuncDecl(IDVar,functypVar,paramlistnullableVar,inheritIDVar,funcbodyVar)
+        else:
+            return FuncDecl(IDVar,functypVar,paramlistnullableVar,None,funcbodyVar)
+        
+
+
+    # Visit a parse tree produced by MT22Parser#funcpro.
+    def visitFuncpro(self, ctx:MT22Parser.FuncproContext):
+        if ctx.INHERIT():
+            return ctx.ID().getText(), self.visit(ctx.functyp()), self.visit(ctx.paramlistnullable), ctx.ID().getText()
+        return ctx.ID().getText(), self.visit(ctx.functyp()), self.visit(ctx.paramlistnullable), False
+
+
+    # Visit a parse tree produced by MT22Parser#paramlistnullable.
+    def visitParamlistnullable(self, ctx:MT22Parser.ParamlistnullableContext):
+        if ctx.paramlistnonnull():
+            return self.visit(ctx.paramlistnonnull())
+        return []
+        
+
+
+    # Visit a parse tree produced by MT22Parser#paramlistnonnull.
+    def visitParamlistnonnull(self, ctx:MT22Parser.ParamlistnonnullContext):
+        if ctx.COMMA():
+            return [self.visit(ctx.param())]+self.visit(ctx.paramlistnonnull())
+        return [self.visit(ctx.param())]
+
+
+    # Visit a parse tree produced by MT22Parser#param.
+    def visitParam(self, ctx:MT22Parser.ParamContext):
+        if ctx.getChildCount() == 3:
+            return ParamDecl(ctx.ID().getText(),self.visit(ctx.typ()),False, False)
+        if ctx.INHERIT() and ctx.OUT():
+            return ParamDecl(ctx.ID().getText(),self.visit(ctx.typ()),True, True)
+        if ctx.INHERIT():
+            return ParamDecl(ctx.ID().getText(),self.visit(ctx.typ()),False, True)
+        if ctx.OUT():
+            return ParamDecl(ctx.ID().getText(),self.visit(ctx.typ()),True, False)
+
+
+
+    def visitFuncbody(self, ctx:MT22Parser.FuncbodyContext):
+        return self.visit(ctx.blockstmt())
+
+
+    def visitFunccall(self, ctx:MT22Parser.FunccallContext):
+        return self.visit(ctx.ID().getText(),self.visit(ctx.exprlistnullable()))
     
 
 
