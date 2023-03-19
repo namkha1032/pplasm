@@ -1,0 +1,3 @@
+Program([
+	VarDecl(a, AutoType, UnExpr(-, UnExpr(-, IntegerLit(32))))
+])

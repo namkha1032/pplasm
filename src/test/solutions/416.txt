@@ -1,0 +1,3 @@
+Program([
+	FuncDecl(main, VoidType, [], None, BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(3)), BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(4)), BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(5)), BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(6)), BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(7)), BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(8)), BlockStmt([IfStmt(BinExpr(>, Id(a), IntegerLit(9)), BlockStmt([AssignStmt(Id(a), IntegerLit(11))]))]))]))]))]))]))]))]))
+])

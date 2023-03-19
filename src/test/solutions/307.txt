@@ -1,0 +1,5 @@
+Program([
+	VarDecl(str1, StringType, StringLit(kha))
+	VarDecl(str2, StringType, StringLit(dep))
+	VarDecl(str3, StringType, StringLit(trai))
+])

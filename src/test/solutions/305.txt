@@ -1,0 +1,5 @@
+Program([
+	VarDecl(a, FloatType, FloatLit(10.3))
+	VarDecl(b, FloatType, FloatLit(20.2))
+	VarDecl(c, FloatType, FloatLit(5.678))
+])

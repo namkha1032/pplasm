@@ -1,0 +1,4 @@
+func: function void(){do{
+                            dostuff();
+                    }
+                    while(homeAlone == true);}

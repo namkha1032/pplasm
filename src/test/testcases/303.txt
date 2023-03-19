@@ -1,2 +1,1 @@
-main: function void () {
-        }
+newArr: array[4,5] of float = {1,2,3,4,5};

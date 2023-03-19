@@ -1,0 +1,5 @@
+func: function void(){if(today < deadline)
+                            hanNop = "dunghan";
+                        else
+                            hanNop = "trehan";
+                    }

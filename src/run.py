@@ -34,7 +34,7 @@ def main(argv):
         elif argv[1] == 'ParserSuite':
             from ParserSuite import ParserSuite
             getAndTest(ParserSuite)
-        elif argv[1] == 'ASTGenSuite':
+        elif argv[1] == '3':
             from ASTGenSuite import ASTGenSuite
             getAndTest(ASTGenSuite)
         # elif argv[1] == 'CheckerSuite':

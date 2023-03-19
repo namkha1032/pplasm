@@ -1,0 +1,5 @@
+ageCalculate: function integer(){
+                            print("nhap so tuoi cua ban: ");
+                            ageVar = readInput();
+                            print("so tuoi cua ban la: ", ageVar);
+                    }

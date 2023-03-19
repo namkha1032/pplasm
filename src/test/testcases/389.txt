@@ -1,0 +1,6 @@
+func: function void(){
+                            x: integer = 1;
+                            a: integer = 2;
+                            b: integer;
+                            b = a + x;
+                        }

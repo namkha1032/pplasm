@@ -9,8 +9,8 @@ class ASTGeneration(MT22Visitor):
     # Visit a parse tree produced by MT22Parser#decllist.
     def visitDecllist(self, ctx:MT22Parser.DecllistContext):
         if ctx.decllist():
-            return [self.visit(ctx.decl())] + self.visit(ctx.decllist())
-        return [self.visit(ctx.decl())]
+            return self.visit(ctx.decl()) + self.visit(ctx.decllist())
+        return self.visit(ctx.decl())
 
     # Visit a parse tree produced by MT22Parser#decl.
     def visitDecl(self, ctx:MT22Parser.DeclContext):
@@ -58,147 +58,8 @@ class ASTGeneration(MT22Visitor):
 
 
     def visitArraylit(self, ctx:MT22Parser.ArraylitContext):
-        return self.visit(ctx.exprlistnullable())
+        return ArrayLit(self.visit(ctx.exprlistnullable()))
 
-
-
-    def visitExpr7(self, ctx:MT22Parser.Expr7Context):
-        if ctx.INTEGER(): return IntegerType()
-        if ctx.FLOAT(): return FloatType()
-        if ctx.STRING(): return StringType()
-        if ctx.TRUE(): return BooleanLit(True)
-        if ctx.FALSE(): return BooleanLit(False)
-        if ctx.ID(): return Id(ctx.ID().getText())
-        if ctx.arraylit(): return self.visit(ctx.arraylit())
-        if ctx.arrayindex(): return self.visit(ctx.arrayindex())
-        if ctx.funccall(): return self.visit(ctx.funccall())
-        if ctx.expr(): return self.visit(ctx.expr())
-
-    def visitExpr6(self, ctx:MT22Parser.Expr6Context):
-        if ctx.SUB(): return UnExpr(ctx.SUB().getText(), self.visit(ctx.expr6()))
-        if ctx.expr7(): return self.visit(ctx.expr7())
-
-    def visitExpr5(self, ctx:MT22Parser.Expr5Context):
-        if ctx.NOT(): return UnExpr(ctx.NOT().getText(), self.visit(ctx.expr5()))
-        if ctx.expr6(): return self.visit(ctx.expr6())
-
-    def visitExpr4(self, ctx:MT22Parser.Expr4Context):
-        if ctx.MUL(): 
-            return BinExpr(ctx.MUL().getText(), self.visit(ctx.expr4()), self.visit(ctx.expr5()))
-        if ctx.DIV(): 
-            return BinExpr(ctx.DIV().getText(), self.visit(ctx.expr4()), self.visit(ctx.expr5()))
-        if ctx.MOD(): 
-            return BinExpr(ctx.MOD().getText(), self.visit(ctx.expr4()), self.visit(ctx.expr5()))
-        if ctx.getChildCount() == 1:
-            return self.visit(ctx.expr5())
-
-    def visitExpr3(self, ctx:MT22Parser.Expr3Context):
-        if ctx.ADD(): 
-            return BinExpr(ctx.ADD().getText(), self.visit(ctx.expr3()), self.visit(ctx.expr4()))
-        if ctx.SUB(): 
-            return BinExpr(ctx.SUB().getText(), self.visit(ctx.expr3()), self.visit(ctx.expr4()))
-        if ctx.getChildCount() == 1:
-            return self.visit(ctx.expr4())
-
-    def visitExpr2(self, ctx:MT22Parser.Expr2Context):
-        if ctx.AND(): 
-            return BinExpr(ctx.AND().getText(), self.visit(ctx.expr2()), self.visit(ctx.expr3()))
-        if ctx.OR(): 
-            return BinExpr(ctx.OR().getText(), self.visit(ctx.expr2()), self.visit(ctx.expr3()))
-        if ctx.getChildCount() == 1:
-            return self.visit(ctx.expr3())
-        
-    def visitExpr1(self, ctx:MT22Parser.Expr1Context):
-        if ctx.EQUAL(): 
-            return BinExpr(ctx.EQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
-        if ctx.NOTEQUAL(): 
-            return BinExpr(ctx.NOTEQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
-        if ctx.LESS(): 
-            return BinExpr(ctx.LESS().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
-        if ctx.GREATER(): 
-            return BinExpr(ctx.GREATER().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
-        if ctx.LESSEQUAL(): 
-            return BinExpr(ctx.LESSEQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
-        if ctx.GREATEREQUAL(): 
-            return BinExpr(ctx.LESSEQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
-        if ctx.getChildCount() == 1:
-            return self.visit(ctx.expr2(0))
-    
-    def visitExpr(self, ctx:MT22Parser.ExprContext):
-        if ctx.CONCAT(): 
-            return BinExpr(ctx.CONCAT().getText(), self.visit(ctx.expr1(0)), self.visit(ctx.expr1(1)))
-        if ctx.getChildCount() == 1:
-            return self.visit(ctx.expr1(0))
-
-    # Chưa làm
-    def visitCallstmt(self, ctx:MT22Parser.CallstmtContext):
-        pass
-
-    def visitReturnstmt(self, ctx:MT22Parser.ReturnstmtContext):
-        if ctx.expr():
-            return ReturnStmt(self.visit(ctx.expr()))
-        return ReturnStmt()
-
-    def visitContinuestmt(self, ctx:MT22Parser.ContinuestmtContext):
-        return ContinueStmt()
-    
-    def visitBreakstmt(self, ctx:MT22Parser.BreakstmtContext):
-        return BreakStmt()
-    
-    def visitDowhilestmt(self, ctx:MT22Parser.DowhilestmtContext):
-        return DoWhileStmt(self.visit(ctx.expr()), self.visit(ctx.blockstmt()))
-
-    def visitWhilestmt(self, ctx:MT22Parser.WhilestmtContext):
-        return WhileStmt(self.visit(ctx.expr()), self.visit(ctx.stmt()))
-
-    # Chưa làm
-    def visitForstmt(self, ctx:MT22Parser.ForstmtContext):
-        return ForStmt()
-
-    # Xem lại cái None
-    def visitIfstmt(self, ctx:MT22Parser.IfstmtContext):
-        if ctx.ELSE():
-            return IfStmt(self.visit(ctx.expr()), self.visit(ctx.stmt(0)), self.visit(ctx.stmt(1)))
-        return IfStmt(self.visit(ctx.expr()), self.visit(ctx.stmt(0)))
-
-
-    # Chưa làm
-    def visitAssignstmt(self, ctx:MT22Parser.AssignstmtContext):
-        return AssignStmt
-    
-    def visitStmt(self, ctx:MT22Parser.StmtContext):
-        if ctx.assignstmt():
-            return self.visit(ctx.assignstmt())
-        if ctx.ifstmt():
-            return self.visit(ctx.ifstmt())
-        if ctx.forstmt():
-            return self.visit(ctx.forstmt())
-        if ctx.whilestmt():
-            return self.visit(ctx.whilestmt())
-        if ctx.dowhilestmt():
-            return self.visit(ctx.dowhilestmt())
-        if ctx.breakstmt():
-            return self.visit(ctx.breakstmt())
-        if ctx.continuestmt():
-            return self.visit(ctx.continuestmt())
-        if ctx.returnstmt():
-            return self.visit(ctx.returnstmt())
-        if ctx.callstmt():
-            return self.visit(ctx.callstmt())
-        if ctx.blockstmt():
-            return self.visit(ctx.blockstmt())
-
-    def visitStmtlist(self, ctx:MT22Parser.StmtlistContext):
-        if ctx.getChildCount() == 0:
-            return []
-        if ctx.stmt():
-            return [self.visit(ctx.stmt())] + self.visit(ctx.stmtlist())
-        if ctx.vardecl():
-            return [self.visit(ctx.vardecl())] + self.visit(ctx.stmtlist())
-        
-    def visitBlockstmt(self, ctx:MT22Parser.BlockstmtContext):
-        return BlockStmt(self.visit(ctx.stmtlist()))
-    
     def visitExprlistnullable(self, ctx:MT22Parser.ExprlistnullableContext):
         if ctx.exprlistnonnull():
             return self.visit(ctx.exprlistnonnull())
@@ -225,7 +86,7 @@ class ASTGeneration(MT22Visitor):
         if ctx.typ():
             return [VarDecl(ctx.ID().getText(), self.visit(ctx.typ()), self.visit(ctx.expr()))]
         childArray = self.visit(ctx.varinit())
-        exprlist = [x.init for x in childArray] + [ctx.expr().accept(self)]
+        exprlist = [x.init for x in childArray] + [ self.visit(ctx.expr())]
         idlist = [ctx.ID().getText()] + [x.name for x in childArray] 
         return [VarDecl(idlist[i], childArray[0].typ, exprlist[i]) for i in range(len(exprlist))]
 
@@ -234,17 +95,17 @@ class ASTGeneration(MT22Visitor):
         IDVar, functypVar, paramlistnullableVar, inheritIDVar = self.visit(ctx.funcpro())
         funcbodyVar = self.visit(ctx.funcbody())
         if inheritIDVar:
-            return FuncDecl(IDVar,functypVar,paramlistnullableVar,inheritIDVar,funcbodyVar)
+            return [FuncDecl(IDVar,functypVar,paramlistnullableVar,inheritIDVar,funcbodyVar)]
         else:
-            return FuncDecl(IDVar,functypVar,paramlistnullableVar,None,funcbodyVar)
+            return [FuncDecl(IDVar,functypVar,paramlistnullableVar,None,funcbodyVar)]
         
 
 
     # Visit a parse tree produced by MT22Parser#funcpro.
     def visitFuncpro(self, ctx:MT22Parser.FuncproContext):
         if ctx.INHERIT():
-            return ctx.ID().getText(), self.visit(ctx.functyp()), self.visit(ctx.paramlistnullable), ctx.ID().getText()
-        return ctx.ID().getText(), self.visit(ctx.functyp()), self.visit(ctx.paramlistnullable), False
+            return ctx.ID(0).getText(), self.visit(ctx.functyp()), self.visit(ctx.paramlistnullable()), ctx.ID(1).getText()
+        return ctx.ID(0).getText(), self.visit(ctx.functyp()), self.visit(ctx.paramlistnullable()), False
 
 
     # Visit a parse tree produced by MT22Parser#paramlistnullable.
@@ -280,10 +141,161 @@ class ASTGeneration(MT22Visitor):
 
 
     def visitFunccall(self, ctx:MT22Parser.FunccallContext):
-        return self.visit(ctx.ID().getText(),self.visit(ctx.exprlistnullable()))
+        return FuncCall(ctx.ID().getText(),self.visit(ctx.exprlistnullable()))
+    
+    
+    def visitExpr(self, ctx:MT22Parser.ExprContext):
+        if ctx.CONCAT(): 
+            return BinExpr(ctx.CONCAT().getText(), self.visit(ctx.expr1(0)), self.visit(ctx.expr1(1)))
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.expr1(0))
+        
+    def visitExpr1(self, ctx:MT22Parser.Expr1Context):
+        if ctx.EQUAL(): 
+            return BinExpr(ctx.EQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
+        if ctx.NOTEQUAL(): 
+            return BinExpr(ctx.NOTEQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
+        if ctx.LESS(): 
+            return BinExpr(ctx.LESS().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
+        if ctx.GREATER(): 
+            return BinExpr(ctx.GREATER().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
+        if ctx.LESSEQUAL(): 
+            return BinExpr(ctx.LESSEQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
+        if ctx.GREATEREQUAL():
+            return BinExpr(ctx.GREATEREQUAL().getText(), self.visit(ctx.expr2(0)), self.visit(ctx.expr2(1)))
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.expr2(0))
+
+    def visitExpr2(self, ctx:MT22Parser.Expr2Context):
+        if ctx.AND(): 
+            return BinExpr(ctx.AND().getText(), self.visit(ctx.expr2()), self.visit(ctx.expr3()))
+        if ctx.OR(): 
+            return BinExpr(ctx.OR().getText(), self.visit(ctx.expr2()), self.visit(ctx.expr3()))
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.expr3())
+
+    def visitExpr3(self, ctx:MT22Parser.Expr3Context):
+        if ctx.ADD(): 
+            return BinExpr(ctx.ADD().getText(), self.visit(ctx.expr3()), self.visit(ctx.expr4()))
+        if ctx.SUB(): 
+            return BinExpr(ctx.SUB().getText(), self.visit(ctx.expr3()), self.visit(ctx.expr4()))
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.expr4())
+
+    def visitExpr4(self, ctx:MT22Parser.Expr4Context):
+        if ctx.MUL(): 
+            return BinExpr(ctx.MUL().getText(), self.visit(ctx.expr4()), self.visit(ctx.expr5()))
+        if ctx.DIV(): 
+            return BinExpr(ctx.DIV().getText(), self.visit(ctx.expr4()), self.visit(ctx.expr5()))
+        if ctx.MOD(): 
+            return BinExpr(ctx.MOD().getText(), self.visit(ctx.expr4()), self.visit(ctx.expr5()))
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.expr5())
+
+    def visitExpr5(self, ctx:MT22Parser.Expr5Context):
+        if ctx.NOT(): return UnExpr(ctx.NOT().getText(), self.visit(ctx.expr5()))
+        if ctx.expr6(): return self.visit(ctx.expr6())
+
+
+    def visitExpr6(self, ctx:MT22Parser.Expr6Context):
+        if ctx.SUB(): return UnExpr(ctx.SUB().getText(), self.visit(ctx.expr6()))
+        if ctx.expr7(): return self.visit(ctx.expr7())
+        
+    def visitExpr7(self, ctx:MT22Parser.Expr7Context):
+        if ctx.INTLIT(): return IntegerLit(int(ctx.INTLIT().getText()))
+        if ctx.FLOATLIT():
+            if ctx.FLOATLIT().getText()[0:2] == ".e":
+                return FloatLit(0.0) 
+            return FloatLit(float(ctx.FLOATLIT().getText()))
+        if ctx.STRINGLIT(): return StringLit(ctx.STRINGLIT().getText())
+        if ctx.TRUE(): return BooleanLit(True)
+        if ctx.FALSE(): return BooleanLit(False)
+        if ctx.ID(): return Id(ctx.ID().getText())
+        if ctx.arraylit(): return self.visit(ctx.arraylit())
+        if ctx.arrayindex(): return self.visit(ctx.arrayindex())
+        if ctx.funccall(): return self.visit(ctx.funccall())
+        if ctx.expr(): return self.visit(ctx.expr())
+
+
+    def visitBlockstmt(self, ctx:MT22Parser.BlockstmtContext):
+        return BlockStmt(self.visit(ctx.stmtlist()))
+    
+    def visitStmtlist(self, ctx:MT22Parser.StmtlistContext):
+        if ctx.getChildCount() == 0:
+            return []
+        if ctx.stmt():
+            return [self.visit(ctx.stmt())] + self.visit(ctx.stmtlist())
+        if ctx.vardecl():
+            return self.visit(ctx.vardecl()) + self.visit(ctx.stmtlist())
+    
+    def visitStmt(self, ctx:MT22Parser.StmtContext):
+        if ctx.assignstmt():
+            return self.visit(ctx.assignstmt())
+        if ctx.ifstmt():
+            return self.visit(ctx.ifstmt())
+        if ctx.forstmt():
+            return self.visit(ctx.forstmt())
+        if ctx.whilestmt():
+            return self.visit(ctx.whilestmt())
+        if ctx.dowhilestmt():
+            return self.visit(ctx.dowhilestmt())
+        if ctx.breakstmt():
+            return self.visit(ctx.breakstmt())
+        if ctx.continuestmt():
+            return self.visit(ctx.continuestmt())
+        if ctx.returnstmt():
+            return self.visit(ctx.returnstmt())
+        if ctx.callstmt():
+            return self.visit(ctx.callstmt())
+        if ctx.blockstmt():
+            return self.visit(ctx.blockstmt())
+
+
+
+    def visitAssignstmt(self, ctx:MT22Parser.AssignstmtContext):
+        if ctx.ID():
+            return AssignStmt(Id(ctx.ID().getText()), self.visit(ctx.expr()))
+        return AssignStmt(self.visit(ctx.arrayindex()), self.visit(ctx.expr())) 
+    
+    # Xem lại cái None
+    def visitIfstmt(self, ctx:MT22Parser.IfstmtContext):
+        if ctx.ELSE():
+            return IfStmt(self.visit(ctx.expr()), self.visit(ctx.stmt(0)), self.visit(ctx.stmt(1)))
+        return IfStmt(self.visit(ctx.expr()), self.visit(ctx.stmt(0)))
+
+
+    def visitForstmt(self, ctx:MT22Parser.ForstmtContext):
+        if ctx.ID():
+            init = AssignStmt(Id(ctx.ID().getText()), self.visit(ctx.expr(0)))
+            return ForStmt(init, self.visit(ctx.expr(1)), self.visit(ctx.expr(2)), self.visit(ctx.stmt()))
+        if ctx.arrayindex():
+            init = AssignStmt(self.visit(ctx.arrayindex()), self.visit(ctx.expr(0)))
+            return ForStmt(init, self.visit(ctx.expr(1)), self.visit(ctx.expr(2)), self.visit(ctx.stmt()))
+        
+    def visitWhilestmt(self, ctx:MT22Parser.WhilestmtContext):
+        return WhileStmt(self.visit(ctx.expr()), self.visit(ctx.stmt()))
+    
+    def visitDowhilestmt(self, ctx:MT22Parser.DowhilestmtContext):
+        return DoWhileStmt(self.visit(ctx.expr()), self.visit(ctx.blockstmt()))
+
+
+    def visitBreakstmt(self, ctx:MT22Parser.BreakstmtContext):
+        return BreakStmt()
     
 
+    def visitContinuestmt(self, ctx:MT22Parser.ContinuestmtContext):
+        return ContinueStmt()
+    
 
+    def visitReturnstmt(self, ctx:MT22Parser.ReturnstmtContext):
+        if ctx.expr():
+            return ReturnStmt(self.visit(ctx.expr()))
+        return ReturnStmt()
+    
+
+    def visitCallstmt(self, ctx:MT22Parser.CallstmtContext):
+        reFunc = self.visit(ctx.funccall())
+        return CallStmt(reFunc.name, reFunc.args)
 
 
 

@@ -1,0 +1,3 @@
+func: function void(){while(mood == "happy"){
+                            study();
+                    }}

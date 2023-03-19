@@ -1,0 +1,3 @@
+func: function void(){while(!flag){
+                            print("world cup");
+                    }}

@@ -1,0 +1,3 @@
+Program([
+	FuncDecl(run, VoidType, [InheritOutParam(p, FloatType), OutParam(i, FloatType), OutParam(d, FloatType)], func, BlockStmt([AssignStmt(Id(p), BinExpr(+, BinExpr(*, UnExpr(-, IntegerLit(24)), Id(i)), BinExpr(/, Id(d), IntegerLit(128)))), AssignStmt(Id(i), BinExpr(+, BinExpr(*, UnExpr(-, IntegerLit(837)), FloatLit(0.362)), IntegerLit(32))), AssignStmt(Id(d), BinExpr(*, BinExpr(%, UnExpr(-, IntegerLit(823)), Id(p)), Id(i)))]))
+])

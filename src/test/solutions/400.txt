@@ -1,0 +1,3 @@
+Program([
+	FuncDecl(main, VoidType, [], main, BlockStmt([VarDecl(a, StringType, StringLit(\\a))]))
+])

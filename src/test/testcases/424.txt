@@ -1,0 +1,8 @@
+
+main: function void() {
+for (a = 0, a < 10, a + 1) {
+    doSth();
+}
+for (b = 9, b < 139023, b * 2)
+    dSth();
+}

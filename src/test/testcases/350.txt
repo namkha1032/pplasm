@@ -1,0 +1,3 @@
+func: function void(){do{
+                            x = x + 1;
+                    }while (x<100);}

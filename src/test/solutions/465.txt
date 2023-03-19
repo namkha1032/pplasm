@@ -1,0 +1,3 @@
+Program([
+	VarDecl(a, AutoType, BinExpr(::, StringLit(Hello world), BinExpr(::, StringLit(John), Id(foo))))
+])

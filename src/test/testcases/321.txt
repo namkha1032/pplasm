@@ -1,0 +1,3 @@
+func: function void(){
+                        myCar = cars[1];
+                        }

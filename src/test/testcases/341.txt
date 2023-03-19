@@ -1,0 +1,4 @@
+func: function void(){while(x>0){
+                        print("i love you");
+                        x = x - 1;
+                    }}

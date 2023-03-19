@@ -1,0 +1,6 @@
+func: function void(){
+                        if(x>2){
+                            print("hehehe");
+                        }
+                      }
+                    

@@ -1,0 +1,1 @@
+press: function integer(inherit key: string, out status: integer, inherit out keyboard_id: integer) {}

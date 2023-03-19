@@ -1,0 +1,3 @@
+Program([
+	FuncDecl(main, VoidType, [], None, BlockStmt([BlockStmt([AssignStmt(Id(jogging), BooleanLit(True)), BlockStmt([AssignStmt(Id(walking), BooleanLit(False))]), AssignStmt(Id(a), IntegerLit(32))])]))
+])

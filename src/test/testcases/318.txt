@@ -1,0 +1,3 @@
+func: function void(){
+                        arr[0,1]=6.9;
+                        }

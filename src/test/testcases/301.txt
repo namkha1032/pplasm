@@ -1,1 +1,1 @@
-x, y, z: integer = 1, 2, 3;
+y: float = 10.3;

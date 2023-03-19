@@ -1,0 +1,5 @@
+run: function void(inherit out p: float, out i: float, out d: float) inherit func{
+        p = 782 * i + d / 562;
+        i = -983 * 0.312 + 32;
+        d = -314 % p * i;
+    }

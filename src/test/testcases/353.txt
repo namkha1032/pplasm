@@ -1,0 +1,5 @@
+func: function void(){do{
+                        laugh();
+                        eat();
+                        hehe = 123;
+                    } while(hotFood);}

@@ -1,0 +1,3 @@
+func: function void(){
+                        cars = {"honda","toyota","nissan"};
+                        }

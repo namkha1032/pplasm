@@ -1,0 +1,3 @@
+Program([
+	FuncDecl(press, VoidType, [InheritParam(key, StringType)], touch, BlockStmt([CallStmt(touch, Id(key)), CallStmt(doSomePressing, Id(key))]))
+])

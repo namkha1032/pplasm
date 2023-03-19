@@ -1,0 +1,6 @@
+
+main: function void() {
+do {
+    jogging = true;
+} while (x == 2);
+}

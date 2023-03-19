@@ -1,0 +1,5 @@
+
+    press: function void(inherit key: string) inherit touch {
+        touch(key);
+        doSomePressing(key);
+    }
