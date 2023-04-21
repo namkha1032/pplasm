@@ -185,26 +185,15 @@ CCOMMENT:   '/*' .*? '*/' -> skip;
 CPLUSCOMMENT:   '//' ~[\n]* -> skip;
 // Literals - lexer
 INTLIT: '0' | [1-9] [0-9]* ('_'[0-9]+)* {self.text = self.text.replace("_","")};
-FLOATLIT: ((('0' | DigitNonZero (Underscore ? Digit) *) (DecimalPart ExponentPart ? | ExponentPart)) | (DecimalPart ExponentPart)) {self.text = self.text.replace('_','')};
+
+FLOATLIT: ((('0' | [1-9] ([_] ? [0-9]) *) (DecimalPart ExponentPart ? | ExponentPart)) | (DecimalPart ExponentPart)) {self.text = self.text.replace('_','')};
 STRINGLIT: ["] (~[\\\n\b\f\r\t'"] | [\\][bfrnt'"\\])*["] {self.text = self.text[1:-1]};
-//
+
 ID: ( [a-zA-Z] | '_' ) ([a-zA-Z]  | [0-9] | '_') * ; 
 
 
-fragment Letter: [a-zA-Z];
-fragment Digit: [0-9];
-fragment DigitNonZero: [1-9];
-fragment Underscore: '_';
-
-fragment DecimalPart: DOT Digit*; 
-fragment ExponentPart: [eE] [+-] ? Digit +;
-
-fragment StringChar: (~[\\"\n]);
-fragment EscapeSeq: '\\' [bfrnt'"\\]; 
-fragment Illegal_EscapeSeq: '\\' ~[bfrnt'"\\] | '\'' ~'"'; 
-
-
-
+fragment DecimalPart: [.] [0-9] *; 
+fragment ExponentPart: [eE] [+-] ? [0-9] +;
 
 
 
