@@ -1,3 +1,0 @@
-func: function void(){for(i=100, i > 0, i-1){
-                            doSomething();
-                    }}

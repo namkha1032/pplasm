@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([DoWhileStmt(Id(hotFood), BlockStmt([CallStmt(laugh, ), CallStmt(eat, ), AssignStmt(Id(hehe), IntegerLit(123))]))]))
-])

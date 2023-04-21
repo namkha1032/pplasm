@@ -1,8 +1,0 @@
-
-    main: function void() {
-        for (cond = 0, cond < 10, cond + 1) {
-            donothing();
-        }
-        for (b = 9, b < 139023, b * 2)
-            fck();
-    }

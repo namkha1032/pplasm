@@ -1,5 +1,0 @@
-func: function void(){while(state)
-                            funcCall();
-                        while(taste)
-                            callFunc();
-                    }

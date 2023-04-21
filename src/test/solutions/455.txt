@@ -1,3 +1,0 @@
-Program([
-	VarDecl(a, AutoType, BinExpr(&&, BinExpr(||, BinExpr(||, BinExpr(&&, BooleanLit(True), BooleanLit(False)), BooleanLit(True)), BooleanLit(False)), BooleanLit(True)))
-])

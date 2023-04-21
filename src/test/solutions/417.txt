@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(main, VoidType, [], None, BlockStmt([WhileStmt(BooleanLit(True), BlockStmt([WhileStmt(Id(foo), BlockStmt([WhileStmt(FuncCall(bar, []), BlockStmt([WhileStmt(ArrayCell(stat, [IntegerLit(2)]), BlockStmt([AssignStmt(Id(fa), IntegerLit(9))]))]))]))]))]))
-])

@@ -1,3 +1,0 @@
-Program([
-	VarDecl(a, AutoType, UnExpr(!, UnExpr(!, Id(barz))))
-])

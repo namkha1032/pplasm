@@ -1,3 +1,0 @@
-func: function void(){do{
-                            toInfinity();
-                    }while(flag == true); }

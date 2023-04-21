@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([IfStmt(BinExpr(==, Id(thoiTietHomNay), StringLit(nang)), CallStmt(nghiHoc, ))]))
-])

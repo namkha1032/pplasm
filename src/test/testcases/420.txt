@@ -1,4 +1,0 @@
-
-main: function void() {
-foo(job, is, hard, 13);
-}

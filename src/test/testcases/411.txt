@@ -1,5 +1,0 @@
-main: function void(/*This is the arg of main function */) {
-        if (/* put condition here */ a == 43 ) /* after which is the code */ { // put code here
-            a = 3490;
-        }
-    }

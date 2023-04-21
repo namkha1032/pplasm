@@ -1,3 +1,0 @@
-Program([
-	VarDecl(f, IntegerType, IntegerLit(10))
-])

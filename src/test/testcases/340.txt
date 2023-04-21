@@ -1,2 +1,0 @@
-func: function void(){while(true)
-                            diNgu();}

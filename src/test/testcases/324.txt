@@ -1,2 +1,0 @@
-func: function void(){if(thoiTietHomNay == "mua")
-                            nghiHoc();}

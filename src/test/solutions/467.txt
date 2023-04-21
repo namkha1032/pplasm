@@ -1,3 +1,0 @@
-Program([
-	VarDecl(a, AutoType, BinExpr(::, BinExpr(-, BinExpr(+, BinExpr(-, BinExpr(+, BinExpr(/, BinExpr(*, BinExpr(==, UnExpr(!, BooleanLit(True)), UnExpr(!, BooleanLit(False))), Id(barz)), IntegerLit(43)), IntegerLit(443)), UnExpr(-, IntegerLit(438))), UnExpr(-, UnExpr(-, IntegerLit(430)))), UnExpr(-, UnExpr(-, IntegerLit(439)))), BinExpr(<, BinExpr(>, StringLit(Hello), IntegerLit(3289)), BinExpr(*, IntegerLit(843), BinExpr(::, IntegerLit(328), IntegerLit(483))))))
-])

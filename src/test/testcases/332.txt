@@ -1,4 +1,0 @@
-func: function void(){for(x=1, x<=100, x+1){
-                        print("chep phat 100 lan");
-                    }
-                    }

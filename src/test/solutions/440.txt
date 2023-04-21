@@ -1,3 +1,0 @@
-Program([
-	VarDecl(a, AutoType, StringLit(Foo bar is dub))
-])

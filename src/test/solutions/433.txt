@@ -1,3 +1,0 @@
-Program([
-	VarDecl(a, AutoType, ArrayCell(arr, [IntegerLit(932), IntegerLit(32)]))
-])

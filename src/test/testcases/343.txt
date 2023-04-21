@@ -1,4 +1,0 @@
-func: function void(){while(a!=b){
-                        a = arr[x];
-                        b = arr[arrSize-x];
-                    }}

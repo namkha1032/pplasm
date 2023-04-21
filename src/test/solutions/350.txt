@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([DoWhileStmt(BinExpr(<, Id(x), IntegerLit(100)), BlockStmt([AssignStmt(Id(x), BinExpr(+, Id(x), IntegerLit(1)))]))]))
-])

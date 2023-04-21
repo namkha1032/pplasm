@@ -1,4 +1,0 @@
-main: function void() inherit main
-{
-    a: string = "\\a";
-}

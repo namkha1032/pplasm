@@ -1,5 +1,0 @@
-Program([
-	VarDecl(a, IntegerType, IntegerLit(2))
-	VarDecl(b, IntegerType, IntegerLit(3))
-	FuncDecl(mulfunc, IntegerType, [Param(x, IntegerType), Param(y, IntegerType)], None, BlockStmt([ReturnStmt(BinExpr(*, Id(x), Id(y)))]))
-])

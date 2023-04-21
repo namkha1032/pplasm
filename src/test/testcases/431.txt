@@ -1,3 +1,0 @@
-main: function void() {
-foo((foo(foo((foo)), foo, foo(foo(foo, foo(foo, foo(foo,foo,foo,foo,(foo()))))))));
-}

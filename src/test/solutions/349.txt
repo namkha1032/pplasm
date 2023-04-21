@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([DoWhileStmt(FuncCall(everybodySleeping, []), BlockStmt([CallStmt(study, ), CallStmt(eat, ), AssignStmt(Id(x), IntegerLit(1))]))]))
-])

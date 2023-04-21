@@ -1,5 +1,0 @@
-func: function void(){for(i=0, i < verticalSize, i+1){
-                            for(j=0, j < horizontalSize, j+1)
-                                arr[i, j] = 13; 
-                            
-                    }}

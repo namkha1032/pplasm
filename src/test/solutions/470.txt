@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(press, IntegerType, [InheritParam(key, StringType), OutParam(status, IntegerType), InheritOutParam(keyboard_id, IntegerType)], None, BlockStmt([]))
-])

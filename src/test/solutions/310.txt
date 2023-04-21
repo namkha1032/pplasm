@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(foo, VoidType, [Param(x, IntegerType)], None, BlockStmt([IfStmt(BinExpr(>=, Id(x), IntegerLit(10)), CallStmt(print, StringLit(kha dep trai)), BlockStmt([IfStmt(BinExpr(==, BinExpr(%, Id(x), IntegerLit(2)), IntegerLit(0)), CallStmt(print, StringLit(kha xau trai)), BlockStmt([CallStmt(print, StringLit(kha vjp pro)), CallStmt(print, StringLit(kha dep trai x10))]))]))]))
-])

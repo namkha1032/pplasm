@@ -1,3 +1,0 @@
-autoFunc2: function auto(a: string, b: string){
-                        return a::b;
-                    }

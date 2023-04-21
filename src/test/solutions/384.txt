@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([CallStmt(print, StringLit(kha dep trai))]))
-])

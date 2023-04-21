@@ -1,5 +1,0 @@
-run: function void(inherit out p: float, out i: float, out d: float) inherit func{
-        p = 18 * i + d / 893;
-        i = -873 * 0.673 + 32;
-        d = -123 % p * i;
-    }

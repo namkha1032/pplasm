@@ -1,5 +1,0 @@
-func: function void(){do{
-                            study();
-                            eat();
-                            x = 1;
-                    }while(everybodySleeping());}

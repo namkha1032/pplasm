@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(floatFunc3, FloatType, [Param(a, FloatType), Param(b, FloatType)], None, BlockStmt([ReturnStmt(BinExpr(*, Id(a), Id(b)))]))
-])

@@ -1,8 +1,0 @@
-
-main: function void() {
-foo();
-}
-
-foo: function integer () {
-return 138;
-}

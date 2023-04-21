@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([AssignStmt(Id(x), IntegerLit(2))]))
-])

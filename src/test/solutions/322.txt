@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(func, VoidType, [], None, BlockStmt([AssignStmt(Id(result), FuncCall(calculate, [Id(a), Id(b)]))]))
-])

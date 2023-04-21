@@ -1,7 +1,0 @@
-func: function void(){while(a<100){
-                            while(b<100){
-                                arr[a,b] = 10;
-                                b = b+1;
-                            }
-                            a = a + 1;
-                    }}

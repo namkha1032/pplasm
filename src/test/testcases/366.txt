@@ -1,5 +1,0 @@
-func: function void(){do{
-                            print(i);
-                            if(i==a)
-                                continue;
-                    }while(i<100);}

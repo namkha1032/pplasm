@@ -1,3 +1,0 @@
-Program([
-	VarDecl(a, AutoType, BinExpr(*, BinExpr(*, IntegerLit(32), IntegerLit(32)), IntegerLit(32)))
-])

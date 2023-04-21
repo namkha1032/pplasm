@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(simpleFunc1, AutoType, [], None, BlockStmt([ReturnStmt(BinExpr(+, IntegerLit(1), IntegerLit(1)))]))
-])

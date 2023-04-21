@@ -1,4 +1,0 @@
-func: function void(){
-                            add(1,2);
-                            sleep();
-                        }

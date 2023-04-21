@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(simpleFunc2, VoidType, [], None, BlockStmt([CallStmt(print, StringLit(hehehe))]))
-])

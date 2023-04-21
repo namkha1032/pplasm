@@ -1,5 +1,0 @@
-func: function void(){do{
-                        takeExercise();
-                        x = a + b;
-                        print(x);
-                    }while(systemLoading);}

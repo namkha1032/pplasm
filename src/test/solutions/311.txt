@@ -1,3 +1,0 @@
-Program([
-	FuncDecl(ageCalculate, IntegerType, [], None, BlockStmt([CallStmt(print, StringLit(nhap so tuoi cua ban: )), AssignStmt(Id(ageVar), FuncCall(readInput, [])), CallStmt(print, StringLit(so tuoi cua ban la: ), Id(ageVar))]))
-])
