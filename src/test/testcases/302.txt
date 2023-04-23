@@ -1,2 +1,25 @@
-x, y, z: integer = 1, 2, 3;
-        a, b: float;
+a:integer=5;
+                    c:auto=1;
+                    
+                    grand: function integer(){
+                        return 0;
+                    }
+                    parent: function integer(x:integer, y:integer, z:integer) inherit grand{
+                        preventDefault();
+                        return 0;
+                    }
+                    child: function integer(c: integer, d: integer) inherit parent{
+                        super(1,2,3);
+                        return add(c,d);
+                    }
+                    add: function integer(a:integer,b:integer){
+                        return a + b;
+                    }
+                    main: function void(){
+                        c=a;
+                        str:string;
+                        num: integer;
+                        sum: float;
+                        sum = child(num,2);
+                        hehehe();
+                    }

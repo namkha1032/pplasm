@@ -1,1 +1,5 @@
-x, y, z: integer = 1, 2, 3;
+a:integer=5;
+                    c:auto=1;
+                    main: function void(){
+                        c=b;
+                    }

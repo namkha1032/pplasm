@@ -1,2 +1,4 @@
-main: function void () {
-        }
+x: function void() {}
+    main: function void() inherit x {
+        super(); //?
+    }
