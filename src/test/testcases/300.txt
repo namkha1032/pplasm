@@ -1,2 +1,25 @@
-a:integer=5;
-        c:auto;
+main: function void(){
+                    a: integer;
+                    b: integer;
+                    c: integer;
+                    i: integer;
+                    for (i=0, i < 10, i+1){
+                        a: integer;
+                        d: integer;
+                        f: float;
+                        if (a == d){
+                            a: integer;
+                            d: integer;
+                            f: string;
+                        }
+                        while(1 == 2){
+                            a: integer;
+                        }
+                    }
+                    do{
+                        c: integer;
+                        f: float;
+                    }
+                    while(a==f);
+        
+                   }

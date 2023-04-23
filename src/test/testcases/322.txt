@@ -1,0 +1,20 @@
+ c:auto=1;
+                    grand: function integer(){
+                        return 0;
+                    }
+                    parent: function integer(inherit x:auto, y:integer) inherit grand{
+                        super("vip", 123, true);
+                        return 0;
+                    }
+                    child1: function integer(m: integer, n: integer) inherit parent{
+                        super("adu", 123);
+                        return 0;
+                    }
+                    child2: function integer(m: integer, n: integer) inherit parent{
+                        super(1, 1.2);
+                        return 0;
+                    }
+                    main: function void(){
+                    }
+                    c:integer;
+                

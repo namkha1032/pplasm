@@ -1,0 +1,13 @@
+
+                    c: string;
+                    main: function void(){
+                    i: integer;
+                        if (1>2){
+                            for(i=1,i<10,i+1){
+                                a: integer;
+                                break;
+                            }
+                        }
+                    }
+                    c:integer;
+                

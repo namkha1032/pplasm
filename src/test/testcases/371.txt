@@ -1,0 +1,9 @@
+
+                    c: string;
+                    foo: function void(){
+                        return;
+                    }
+                    main: function void(){
+                    }
+                    c:integer;
+                

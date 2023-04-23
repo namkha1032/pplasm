@@ -1,0 +1,7 @@
+
+                    main: function void(){
+                        break;
+                        continue;
+                    }
+                    c:integer;
+                

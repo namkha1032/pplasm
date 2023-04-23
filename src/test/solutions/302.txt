@@ -1,1 +1,1 @@
-Undeclared Function: hehehe
+Redeclared Function: main

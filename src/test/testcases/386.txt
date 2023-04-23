@@ -1,0 +1,11 @@
+
+                    a:integer;
+                    foo: function void(){
+                        a: float;
+                        b: string;
+                        b: integer;
+                        inc();
+                    }
+                    inc: function void(){
+                    }
+                    d:float;

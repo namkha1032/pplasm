@@ -1,0 +1,6 @@
+ c: auto = 1.5;
+                    main: function void(){
+                        b: integer = c;
+                    }
+                    c: string;
+                

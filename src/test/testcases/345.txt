@@ -1,0 +1,6 @@
+foo: function void(){
+                        inc();
+                    }
+                    inc: function void(){
+                    }
+                    d:float;

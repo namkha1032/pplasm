@@ -1,0 +1,1 @@
+Type mismatch in Variable Declaration: VarDecl(num2, IntegerType, FuncCall(foo, [IntegerLit(2)]))

@@ -1,0 +1,15 @@
+
+                    a:integer;
+                    str:string;
+                    f:float;
+                    main:function void(){
+                        if(a == f){
+                            a:integer;
+                            c:float;
+                            c:string;
+                        }
+                        else{
+                            d:integer;
+                        }
+                    }
+                

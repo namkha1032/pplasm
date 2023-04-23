@@ -1,0 +1,7 @@
+ c: array[5] of float = {1.2,1,1.2};
+                    main: function void(){
+                        a: float;
+                        a = c[1];
+                    }
+                    c: string;
+                

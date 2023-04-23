@@ -1,0 +1,4 @@
+ c:auto=1;
+                    arr: array[5] of float = {1, 1.2 ,2};
+                    main: string;
+                

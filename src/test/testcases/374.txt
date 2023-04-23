@@ -1,0 +1,12 @@
+
+                    c: string;
+                    foo: function auto(x: auto, c:string, c:auto){
+                        return x;
+                    }
+                    main: function void(){
+                        num: integer = foo(1);
+                        num2: float = foo(2);
+
+                    }
+                    c:integer;
+                

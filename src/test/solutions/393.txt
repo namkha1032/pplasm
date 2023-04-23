@@ -1,0 +1,1 @@
+Type mismatch in statement: CallStmt(sum, FloatLit(2.2))

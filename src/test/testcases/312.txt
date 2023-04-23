@@ -1,0 +1,11 @@
+
+                    sum: function integer(a: auto){
+                        return 2;
+                    }
+                    main: function void(){
+                        x: integer;
+                        sum(1);
+                        y: float;
+                        sum(1.1);
+                    }
+                

@@ -17,22 +17,20 @@ class GetEnv(Visitor):
     def visitProgram(self, ctx: Program, o):
         o = [[]]
         for decl in ctx.decls:
-            if type(decl) is BreakStmt or type(decl) is ContinueStmt:
-                raise MustInLoop(decl)
             o = self.visit(decl, o)
         return o
     def visitVarDecl(self, ctx:VarDecl, o):
-        for decl in o[0]:
-            if decl.name == ctx.name:
-                raise Redeclared(Variable(), ctx.name)
+        # for decl in o[0]:
+        #     if decl.name == ctx.name:
+        #         raise Redeclared(Variable(), ctx.name)
         o[0] += [ctx]
         return o
         
     def visitFuncDecl(self, ctx:FuncDecl, o):
         # Check redeclared function
-        for decl in o[0]:
-            if decl.name == ctx.name:
-                raise Redeclared(Function(), ctx.name)
+        # for decl in o[0]:
+        #     if decl.name == ctx.name:
+        #         raise Redeclared(Function(), ctx.name)
         o[0] += [ctx]
         return o
 
@@ -94,20 +92,35 @@ class StaticChecker(Visitor):
         self.ast = ast
  
     def check(self):
-        return self.visitProgram(self.ast, [[]])
+        return self.visitProgram(self.ast, [])
     
     def visitProgram(self, ctx:Program, o):
         o = GetEnv().visit(ctx,o)
+        count = 0
         for decl in ctx.decls:
-            self.visit(decl, o)
+            for i in range(count):
+                if decl.name == ctx.decls[i].name:
+                    if type(decl) is VarDecl:
+                        raise Redeclared(Variable(),decl.name)
+                    if type(decl) is FuncDecl:
+                        raise Redeclared(Function(),decl.name)
+            count+=1
+            o = self.visit(decl, o)
         # entry point
         for decl in ctx.decls:
-            if decl.name == "main":
-                return o
+            if decl.name == "main" and type(decl) is FuncDecl:
+                return
         raise NoEntryPoint()
 
     def visitVarDecl(self, ctx:VarDecl, o):
         # Check for redeclared if not global scope
+        # if len(o) == 1:
+        #     count = 0
+        #     for decl in o[-1]:
+        #         if decl.name == ctx.name:
+        #             count+=1
+        #             if count == 2:
+        #                 raise Redeclared(Variable(), ctx.name)  
         if len(o) > 1:
             for decl in o[0]:
                 if decl.name == ctx.name:
@@ -121,11 +134,49 @@ class StaticChecker(Visitor):
             ctx.typ = inittype
             if len(o) > 1:
                 o[0] += [ctx]
+            else:
+                for declIndex, decl in enumerate(o[-1]):
+                    if decl.name == ctx.name:
+                        o[-1][declIndex].typ = inittype
+                        return o
             return o
         # Check for init value
         if ctx.init is not None:
             vartype = self.visit(ctx.typ, o)
             inittype = self.visit(ctx.init, o)
+            if type(vartype) is ArrayType:
+                # if type(vartype.typ) is AutoType:
+                #     if len(o) > 1:
+                #         o[0] += [ctx]
+                #         return o
+                #     else:
+                #         for arrIndex, arr in enumerate(o[-1]):
+                #             if arr.name == ctx.init.name:
+                #                 o[-1][arrIndex].typ.typ = inittype
+                #                 return o
+                if type(vartype.typ) is FloatType and type(inittype) is IntegerType:
+                    if len(o) > 1:
+                        o[0] += [ctx]
+                    return o
+                if type(vartype.typ) is type(inittype):
+                    if len(o) > 1:
+                        o[0] += [ctx]
+                    return o
+            if type(inittype) is AutoType:
+                found = False
+                for scopeIndex, scope in enumerate(o):
+                    for funcIndex, func in enumerate(scope):
+                        if func.name == ctx.init.name:
+                            o[scopeIndex][funcIndex].return_type = vartype
+                            found = True
+                        if found == True:
+                            break
+                    if found == True:
+                        break
+                if len(o) > 1:
+                    o[0] += [ctx]
+                return o
+            
             if type(vartype) is not type(inittype):
                 if (type(vartype) is FloatType and type(inittype) is IntegerType):
                     if len(o) > 1:
@@ -147,6 +198,13 @@ class StaticChecker(Visitor):
         return localenv
 
     def visitFuncDecl(self, ctx:FuncDecl, o):
+        # Check redeclared func
+        # count = 0
+        # for decl in o[-1]:
+        #     if decl.name == ctx.name:
+        #         count+=1
+        #         if count == 2:
+        #             raise Redeclared(Function(), ctx.name)  
         # Check local param
         localenv = [[]] + o
         for paramdecl in ctx.params:
@@ -160,8 +218,10 @@ class StaticChecker(Visitor):
                     parent = decl
             if parent is 0:
                 raise Undeclared(Function(), ctx.inherit)
-            # Find inherit param
-            inheritenv = findParentEnv(parent, o)
+            # Get all environment of current parent
+            for parentparam in parent.params:
+                if parentparam.inherit == True:
+                    inheritenv += [parentparam]
             # Check for invalid parameter
             for localparam in localenv[0]:
                 for inheritparam in inheritenv:
@@ -176,44 +236,96 @@ class StaticChecker(Visitor):
             if i == 0 and ctx.inherit is not None:
                 if len(parent.params) > 0:
                     if type(line) is not CallStmt:
-                        raise InvalidStatementInFunction(ctx.name)
+                        raise TypeMismatchInExpression("")
                     if line.name != "super" and line.name != "preventDefault":
-                        raise InvalidStatementInFunction(ctx.name)
+                        raise TypeMismatchInExpression("")
                     if line.name == "super":
                         if len(line.args) > len(parent.params):
                             raise TypeMismatchInExpression(line.args[len(parent.params)])
-                        if len(line.args) > len(parent.params):
-                            raise TypeMismatchInExpression()
+                        if len(line.args) < len(parent.params):
+                            raise TypeMismatchInExpression("")
                         if len(line.args) == len(parent.params):
+                            # --------------------------------------------------------------------------------------------
+                            # for i in range(len(line.args)):
+                            #     argtype = self.visit(line.args[i],localenv)
+                            #     paramtype = parent.params[i].typ
+                            #     if type(paramtype) is AutoType:
+                            #         # for i in range(len(localenv[-1])):
+                            #         #     if localenv[-1][i].name == ctx.name:
+                            #         #         for j in range(len(localenv[-1][i].params)):
+                            #         #             if localenv[-1][i].params[j].name == parent.params[i].name:
+                            #         #                 localenv[-1][i].params[j].typ = argtype
+                            #         funcIndex = [idx for idx, element in localenv[-1] if element.name == parent.name]
+                            #     if type(paramtype) is FloatType and type(argtype) is IntegerType:
+                            #         continue
+                            #     if type(argtype) is not type(paramtype):
+                            #         raise TypeMismatchInExpression(line.args[i])
+                            # --------------------------------------------------------------------------------------------
                             for i in range(len(line.args)):
                                 argtype = self.visit(line.args[i],localenv)
                                 paramtype = parent.params[i].typ
-                                print(argtype)
-                                print(paramtype)
+                                if type(paramtype) is FloatType and type(argtype) is IntegerType:
+                                    continue
+                                if type(paramtype) is AutoType:
+                                    found = False
+                                    for scopeIndex,decllist in enumerate(localenv):
+                                        for declIndex, decl in enumerate(decllist):
+                                            if decl.name == parent.name:
+                                                for paramIndex, param in enumerate(decl.params):
+                                                    if param.name == parent.params[i].name:
+                                                        localenv[scopeIndex][declIndex].params[paramIndex].typ = argtype
+                                                        found = True
+                                                    if found == True:
+                                                        break
+                                            if found == True:
+                                                break
+                                        if found == True:
+                                            break
+                                    continue
                                 if type(argtype) is not type(paramtype):
                                     raise TypeMismatchInExpression(line.args[i])
+                            # --------------------------------------------------------------------------------------------
+                    i+=1
+                    continue
                 if len(parent.params) == 0:
-                    if type(line) is not CallStmt:
+                    if type(line) is CallStmt:
+                        if line.name == "preventDefault":
+                            i+=1
+                            continue
+                        if line.name == "super":
+                            if len(line.args) > 0:
+                                raise TypeMismatchInExpression(line.args[len(parent.params)])
+                            i+=1
+                            continue
+
+
+            if i == 0 and ctx.inherit is None:
+                if type(line) is CallStmt:
+                    if line.name == "preventDefault" or line.name == "super":
                         raise InvalidStatementInFunction(ctx.name)
-                    if line.name != "preventDefault":
-                        raise InvalidStatementInFunction(ctx.name)
-                i+=1
-                continue
             if type(line) is BreakStmt or type(line) is ContinueStmt:
                 raise MustInLoop(line)
             if type(line) is ReturnStmt:
                 # Xem lại cái này
                 if type(ctx.return_type) is VoidType and line.expr is None:
+                    o[-1] = localenv[-1]
                     return o
                 if type(ctx.return_type) is AutoType and line.expr is not None:
+                    retype = self.visit(line.expr,localenv)
+                    for i in range(len(localenv[-1])):
+                        if localenv[-1][i].name == ctx.name:
+                            localenv[-1][i].return_type = retype
+                    o[-1] = localenv[-1]
                     return o
                 if type(ctx.return_type) is not VoidType and line.expr is None:
                     raise TypeMismatchInStatement(line)
                 if type(ctx.return_type) is type(self.visit(line.expr, localenv)):
+                    o[-1] = localenv[-1]
                     return o
                 raise TypeMismatchInStatement(line)
             localenv = self.visit(line,localenv)
             i+=1
+        o[-1] = localenv[-1]
         return o
 
 
@@ -377,7 +489,9 @@ class StaticChecker(Visitor):
     def visitArrayCell(self, ctx:ArrayCell, o):
         arrtype = self.visit(Id(ctx.name),o)
         if type(arrtype) is not ArrayType:
-                raise TypeMismatchInExpression(ctx)
+            raise TypeMismatchInExpression(ctx)
+        if len(arrtype.dimensions) != len(ctx.cell):
+            raise TypeMismatchInExpression(ctx)
         for indexNum in ctx.cell:
             indexType = self.visit(indexNum,o)
             if type(indexType) is not IntegerType:
@@ -404,20 +518,31 @@ class StaticChecker(Visitor):
         currtyp = 0
         for lit in ctx.explist:
             currtyp = self.visit(lit,o)
-            arraytyp += currtyp
+            arraytyp += [currtyp]
             if len(arraytyp) > 1:
+                if type(arraytyp[-2]) is FloatType and  type(arraytyp[-1]) is IntegerType:
+                    arraytyp[-1] = FloatType()
+                    currtyp = FloatType()
+                    continue
+                if type(arraytyp[-1]) is FloatType and  type(arraytyp[-2]) is IntegerType:
+                    arraytyp[-2] = FloatType()
+                    currtyp = FloatType()
+                    continue
                 if type(arraytyp[-1]) is not type(arraytyp[-2]):
-                    raise IllegalArrayLiteral(ctx.explist)
+                    raise IllegalArrayLiteral(ctx)
         return currtyp
     def visitFuncCall(self, ctx:FuncCall, o):
         # check if function exist
         refunc = 0
         found = False
-        for decllist in o:
-            for decl in decllist:
+        for scopeIndex,decllist in enumerate(o):
+            for declIndex, decl in enumerate(decllist):
                 if decl.name == ctx.name:
                     found = True
                     refunc = decl
+                    break
+            if found == True:
+                break       
         if found == False:
             raise Undeclared(Function(), ctx.name)
         # xem lại
@@ -433,6 +558,24 @@ class StaticChecker(Visitor):
         for i in range(len(ctx.args)):
             argtype = self.visit(ctx.args[i],o)
             paramtype = refunc.params[i].typ
+            if type(paramtype) is FloatType and type(argtype) is IntegerType:
+                continue
+            if type(paramtype) is AutoType:
+                found = False
+                for scopeIndex,decllist in enumerate(o):
+                    for declIndex, decl in enumerate(decllist):
+                        if decl.name == refunc.name:
+                            for paramIndex, param in enumerate(decl.params):
+                                if param.name == refunc.params[i].name:
+                                    o[scopeIndex][declIndex].params[paramIndex].typ = argtype
+                                    found = True
+                                if found == True:
+                                    break
+                        if found == True:
+                            break
+                    if found == True:
+                        break
+                continue
             if type(argtype) is not type(paramtype):
                 raise TypeMismatchInExpression(ctx)
         return refunc.return_type
@@ -472,24 +615,28 @@ class StaticChecker(Visitor):
         line = self.visit(line,env)
         if type(line) is BreakStmt or type(line) is ContinueStmt:
             raise MustInLoop(line)
+        o[-1] = env[-1]
         return o
 
     def visitForStmt(self, ctx:ForStmt, o):
+        o = self.visit(ctx.init,o)
         if type(self.visit(ctx.init.rhs,o)) is not IntegerType:
             raise TypeMismatchInStatement(ctx)
-        env = [[VarDecl(ctx.init.lhs.name, IntegerType())]] + o
+        env = [[]] + o
         if type(self.visit(ctx.cond, env)) is not BooleanType:
             raise TypeMismatchInStatement(ctx)
         if type(self.visit(ctx.upd, env)) is not IntegerType:
             raise TypeMismatchInStatement(ctx)
         # xem lại nên dùng block hay ko
         env = self.visit(ctx.stmt, env)
+        o[-1] = env[-1]
         return o
     def visitWhileStmt(self, ctx:WhileStmt, o):
         if type(self.visit(ctx.cond,o)) is not BooleanType:
             raise TypeMismatchInStatement(ctx)
         env = [[]] + o
         env = self.visit(ctx.stmt, env)
+        o[-1] = env[-1]
         return o
     
     def visitDoWhileStmt(self, ctx:DoWhileStmt, o):
@@ -497,6 +644,7 @@ class StaticChecker(Visitor):
             raise TypeMismatchInStatement(ctx)
         env = [[]] + o
         env = self.visit(ctx.stmt, env)
+        o[-1] = env[-1]
         return o
     def visitBreakStmt(self, ctx:BreakStmt, o):
         return o
@@ -513,6 +661,8 @@ class StaticChecker(Visitor):
                 if decl.name == ctx.name:
                     found = True
                     refunc = decl
+            if found == True:
+                break   
         if found == False:
             raise Undeclared(Function(), ctx.name)
         # xem lại
@@ -525,9 +675,27 @@ class StaticChecker(Visitor):
         for i in range(len(ctx.args)):
             argtype = self.visit(ctx.args[i],o)
             paramtype = refunc.params[i].typ
+            if type(paramtype) is FloatType and type(argtype) is IntegerType:
+                continue
+            if type(paramtype) is AutoType:
+                found = False
+                for scopeIndex,decllist in enumerate(o):
+                    for declIndex, decl in enumerate(decllist):
+                        if decl.name == refunc.name:
+                            for paramIndex, param in enumerate(decl.params):
+                                if param.name == refunc.params[i].name:
+                                    o[scopeIndex][declIndex].params[paramIndex].typ = argtype
+                                    found = True
+                                if found == True:
+                                    break
+                        if found == True:
+                            break
+                    if found == True:
+                        break
+                continue
             if type(argtype) is not type(paramtype):
-                raise TypeMismatchInExpression(ctx)
-        return refunc.return_type
+                raise TypeMismatchInStatement(ctx)
+        return o
 
     def visitIntegerType(self, ctx:IntegerType, o):
         return IntegerType()
@@ -538,7 +706,7 @@ class StaticChecker(Visitor):
     def visitStringType(self,  ctx:StringType, o): 
         return StringType()
     def visitArrayType(self,  ctx:ArrayType, o): 
-        return ArrayType()
+        return ArrayType(ctx.dimensions, ctx.typ)
     def visitAutoType(self,  ctx:AutoType, o): 
         return AutoType()
     def visitVoidType(self,  ctx:VoidType, o): 

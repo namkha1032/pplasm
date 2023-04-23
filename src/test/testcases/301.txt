@@ -1,5 +1,6 @@
 a:integer=5;
-                    c:auto=1;
+                    c:auto=1.5;
                     main: function void(){
-                        c=b;
+                        c=a;
                     }
+                    a:float;

@@ -1,1 +1,1 @@
-Invalid statement in function: main
+Redeclared Function: foo
